@@ -1,23 +1,50 @@
-const express = require('express')
-require('dotenv').config()
-
-const app = express()
-
-app.get('/', (req, res) => {
-  res.send('Hello World!')
-})
-app.get('/twitter', (req, res) => {
-  res.send(`Twitter crushed on port ${port}!`)
+// require('dotenv').config({path: './env'})
+import dotenv from "dotenv"
+import connectDB from "./db/index.js";
+import {app} from './app.js'
+dotenv.config({
+    path: './.env'
 })
 
-app.get('/login', (req, res) => {
-  res.send('<h1>Login Page</h1>')
+
+
+connectDB()
+.then(() => {
+    app.listen(process.env.PORT || 8000, () => {
+        console.log(`⚙️ Server is running at port : ${process.env.PORT}`);
+    })
+})
+.catch((err) => {
+    console.log("MONGO db connection failed !!! ", err);
 })
 
-app.get('/youtube', (req, res) => {
-  res.send('<h1>Youtube is running on port ${port}</h1>')
-})
 
-app.listen(process.env.PORT, () => {
-  console.log(`Example app listening on port ${port}`)
-})
+
+
+
+
+
+
+
+
+
+
+
+
+/*
+( async () => {
+  try {
+    await mongoose.connect(`${process.env.MONGODB_URI}/${DB_NAME}`)
+    app.on("error", (error) => {
+      console.log("ERROR:", error)
+      throw error
+    })
+    app.listen(process.env.PORT, () => {
+      console.log(`App is listening on http://localhost:${process.env.PORT}`)
+    })
+
+  } catch (error) {
+    console.error("ERROR:", error)
+    throw error
+  }
+})(); */
